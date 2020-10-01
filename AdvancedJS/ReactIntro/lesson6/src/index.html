@@ -1,0 +1,149 @@
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Lab</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+</head>
+
+<body>
+	<div id="root"></div>
+	​
+	<script crossorigin src="https://unpkg.com/react@16.8.6/umd/react.development.js"></script>
+	<script crossorigin src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js"></script>
+	<script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+	<script crossorigin src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+	<script type="text/babel">
+
+
+		const root = document.getElementById("root");
+		const BASEURL = 'https://jsonplaceholder.typicode.com/users';
+		//IT WORKS
+		// class App extends React.Component {
+		// 			constructor(props) {
+		// 				super(props);
+		// 				this.state = {
+		// 					data: [],
+		// 				}
+		// 			};
+		// 			// works with it 
+		// 			componentDidMount() {
+		// 				fetch(`${BASEURL}`)
+		// 					.then(response => response.json())
+		// 					.then(response => { this.setState({ data: response }) })
+		// 			}
+		// 			// works with it
+
+		// 			render() {
+		// 				const { data } = this.state;
+		// 				return (
+		// 					<ul>
+		// 						{
+		// 							data.map(user => (
+		// 								<li key={user.id} >
+		// 									Name: {user.name} username:{user.username} mail: {user.email}
+		// 								</li>
+		// 							))
+		// 						}
+		// 					</ul>
+		// 				)
+		// 			}
+		// 		}
+		// IT WORKS
+
+		// doesn't work 
+
+		// async function GetUsersInfo() {
+		// const BASEURL = 'https://jsonplaceholder.typicode.com/users';
+		// 	const response = await fetch(BASEURL, {});
+		// 	const data = await response.json();
+		// 	console.log(data);
+		// }
+
+		// ? doesn't work
+
+		// const BASEURL = 'https://jsonplaceholder.typicode.com/users';
+		// fetch(BASEURL)
+		// 	.then(function (result) {
+		// 		return result.json();
+		// 	})
+		// 	.then(
+		// 		function (json) {
+		// 			data = json;
+		// 		}
+		// 	)
+
+		// ? doesn't work
+
+
+		const User = ({ profile }) => (
+			<li>
+				<p>{profile.name}</p>
+				<p>{profile.username}</p>
+				<p>{profile.email}</p>
+			</li>
+		)
+		const UsersList = ({ data }) => (
+			<ul>
+				{
+					data.map(profile => (
+						<User key={profile.id} profile={profile} />
+					))
+				}
+			</ul>
+		)
+		class FilterUsersForm extends React.Component {
+			state = {
+				value: ""
+			};
+			update = event => this.setState({ value: event.target.value });
+			render() {
+				return (
+					<form>
+						<input
+							type={"text"}
+							value={this.state.value}
+							onChange={this.update}
+						/>
+						<button>
+							Filter users
+					</button>
+					</form>
+				)
+			}
+		}
+		class App extends React.Component {
+			constructor(props) {
+				super(props);
+				this.state = {
+					data: [],
+				}
+			};
+
+
+			// works with it
+			componentDidMount() {
+				fetch(`${BASEURL}`)
+					.then(response => response.json())
+					.then(response => { this.setState({ data: response }) })
+			}
+			// works with it
+			render() {
+				return (
+
+					<div>
+						<FilterUsersForm /> 	{/* Як у цій формі прив'язати як значення для пошуку її target.value, яке б порівнювалось із значенням із масиву data, а саме значенням  поля username для кожного з юзерів при виконанні методу із цього класу і як мені перезаписати відфільтрований масив у state замість старого? */}
+						<UsersList data={this.state.data} />
+
+					</div>
+
+				)
+			}
+		}
+		ReactDOM.render(<App />, root);
+	</script>
+</body>
+
+</html>
