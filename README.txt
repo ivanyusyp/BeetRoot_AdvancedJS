@@ -1,0 +1,1 @@
+Repository for projects from Advanced_JS course Beetroot Academy.
